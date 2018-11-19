@@ -1,0 +1,30 @@
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "description": "api gateway service to route requests & provide a common public interface",
+  "main": "index.js",
+  "repository": "https://github.com/leemlwando/microtech/api-gateway-api",
+  "author": "lee m. lwando",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "http-errors": "^1.7.1",
+    "ioredis": "^4.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "moleculer": "^0.13.2",
+    "moleculer-web": "^0.8.1",
+    "mongoose": "^5.2.17",
+    "morgan": "^1.9.1",
+    "request": "^2.88.0"
+  },
+  "scripts": {
+    "start": "pm2 start www/index.js --name=api-gateway",
+    "stop": "pm2 stop api-gateway ",
+    "dev": "nodemon www/index.js"
+  }
+}
