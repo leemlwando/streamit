@@ -120,7 +120,8 @@ setup.catch404 = function(req,res,next){
 
 //handle errors
 setup.errorHandler = function(err,req,res,next){
-    const error = ErrorMessages(err);
+	let _error = ErrorMessages(err);
+	let error = {};
     let availableCodes = [401,404,403,500,503,406];
 	let defaultCode = 500;
 	let code = err.code && availableCodes.includes(Number(err.code)) ? err.code : defaultCode;
@@ -139,10 +140,11 @@ setup.errorHandler = function(err,req,res,next){
             documentation:"https://github.com/leemlwando/streamit"
         });
     };
-
+	error.code = code;
+	error.message = _error;
     res.locals.error = error; //create global error object
     res.status(code); //set status code
-    res.render("error/index"); //render custom error page
+    res.render("errors/index"); //render custom error page
 }
 
 
