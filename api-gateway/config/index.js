@@ -1,33 +1,28 @@
 const { ServiceBroker } = require("moleculer");
-const routes = require("../api");
+const {ErrorMessages} = require("../lib");
+const createError = require('http-errors');
 
-const setup = {
-	serviceConfig:_serviceConfig(), //internal service configurations
-	brokerConfig:_brokerConfig() //internal broker configurations
+const setup = {};
+
+//create service configurations
+setup.serviceConfig = {
+    mixins: [],
+
+    settings: {
+        // Exposed port
+        port: 5000,
+
+        // Exposed IP
+        ip: "0.0.0.0",
+        use:[
+            
+        ]
+    }
 };
 
-function _startBroker(){return new ServiceBroker(setup.brokerConfig)}; //create broker instance
-
-setup.broker = _startBroker(); //expose broker instance
-
-module.exports = {setup};
-
-//service configurations
-function _serviceConfig(){
-	return {
-		mixins:[],
-		settings:{
-			port:5000,
-			ip:"0.0.0.0",
-			use:[routes] //middleware
-		}
-	}
-}
-
-//broker configurations
-function _brokerConfig(){
-	return  {
-	namespace: "dev",
+//setup broker configurations
+setup.brokerConfig = {
+    namespace: "dev",
 	nodeID: "api-gateway",
 
 	logger: true,
@@ -112,5 +107,44 @@ function _brokerConfig(){
 	},
 
 	replCommands: null
+
+};
+
+//create broker instance
+setup.broker = new ServiceBroker(setup.brokerConfig);
+
+//catch 404 errors
+setup.catch404 = function(req,res,next){
+    next(createError(404, {}, {success:false, code:404}))
+};
+
+//handle errors
+setup.errorHandler = function(err,req,res,next){
+    const error = ErrorMessages(err);
+    let availableCodes = [401,404,403,500,503,406];
+	let defaultCode = 500;
+	let code = err.code && availableCodes.includes(Number(err.code)) ? err.code : defaultCode;
+        //give json response for api queries
+    if(req.path.startsWith("/api")){
+	
+        res.status(code);
+
+        //return error
+        return res.json({
+			status:code,
+            success:false,
+            message:error,
+            reason:err.message || "Please Refer to documentation",
+            date: new Date(),
+            documentation:"https://github.com/leemlwando/streamit"
+        });
+    };
+
+    res.locals.error = error; //create global error object
+    res.status(code); //set status code
+    res.render("error/index"); //render custom error page
 }
-}
+
+
+
+module.exports = setup;

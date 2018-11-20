@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "api gateway service to route requests & provide a common public interface",
   "main": "index.js",
-  "repository": "https://github.com/leemlwando/microtech/api-gateway-api",
-  "author": "lee m. lwando",
+  "repository": "https://github.com/microtechcloud/streamit/api-gateway-api",
+  "author": "lee m lwando",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "dependencies": {
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
@@ -23,8 +23,8 @@
     "request": "^2.88.0"
   },
   "scripts": {
-    "start": "pm2 start www/index.js --name=api-gateway",
-    "stop": "pm2 stop api-gateway ",
+    "start": "pm2 start www/index.js --name=api-gateway-service",
+    "stop": "pm2 stop api-gateway-service",
     "dev": "nodemon www/index.js"
   }
 }

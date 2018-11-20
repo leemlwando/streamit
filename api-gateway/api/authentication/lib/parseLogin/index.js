@@ -1,6 +1,7 @@
     //required fields
     let fields =["username","password"];
     const request = require("request");
+    const createError = require("http-errors");
     
     module.exports = (req,res,next)=>{
         
@@ -10,7 +11,8 @@
         let missingFields = RequiredFields(req.body);
     
         if(missingFields.length){
-            return res.json({success:false,message:"missing Fields", fields:missingFields});
+            return next(createError(406,{success:false,message:"missing Fields", message:missingFields}));
+            
         };
     
         let User = {username,password};
@@ -26,7 +28,7 @@
                 return serv.name ==="user-service"
             })
             // return res.json({success:true,service:_services});
-            return sendRequest(req,res,_services,User);
+            return sendRequest(req,res,next,_services,User);
         });
     
        
@@ -54,7 +56,7 @@
             .catch(err=>done(err,false));
     };
     
-    function sendRequest(_req,res,instances,User){
+    function sendRequest(_req,res,next,instances,User){
         _resources = {
             login:"login",
             register:"register",
@@ -63,7 +65,7 @@
         };
     
         
-        let {ip,port} = instances[0]  ? instances[0].settings : res.json({success:false,message:"service unavailable",date:new Date()});
+        let {ip,port} = instances[0]  ? instances[0].settings : next(createError(503,{success:false,message:"service unavailable",date:new Date()}, {expose:true}));
     
         return request.post(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/authentication/login?`,{
             // headers:_req.headers,
@@ -78,7 +80,7 @@
             console.log("body",body);
             if(error){
              
-                return res.json({success:false,message:"service unavailable",reason:null});
+                return  next(createError(503,{success:false,message:"server may down or service unavailable due to zesco loadsheding",reason:null}));
             }
     
             if(response){

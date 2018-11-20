@@ -1,9 +1,8 @@
-const parseVideo = require('./videos');
 
 module.exports = {
     video:{
         get:(req,res,next)=>{
-            return parseVideo(req,res,next);
+            res.json({sucess:true,status:200,message:"This is Streamits video streaming api,please refer to documentaion for more info", date:new Date()})
         },
         post:(req,res,next)=>{
             res.json({sucess:true,status:200,message:"This is Streamits video streaming api,please refer to documentaion for more info", date:new Date()});

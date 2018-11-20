@@ -39,39 +39,26 @@ router.get("/uploads",uploads.client.get);
 
 router.post("/uploads", uploads.client.post);
 
-/*
-    POST UPLOADS IMAGES
+
+/**
+ * TO BE DONE
 */
-// router.post('/uploads/images',uploads.post);
+// //streaming
 
-/*
-    POST UPLOADS VIDEO
-*/
+// /*
+//     @returns GET
+// */
+// router.get('/streaming/video/:version/:public_id',video.get);
+// router.get('/streaming/audio',audio.get);
+// router.get('/streaming/images',images.get);
 
-// router.post('/uploads/videos',uploads.post);
-
-/*
-    POST UPLOADS AUDIO
-*/
-// router.post('/uploads/audios',uploads.post);
-
-
-//streaming
-
-/*
-    @returns GET
-*/
-router.get('/streaming/video/:version/:public_id',video.get);
-router.get('/streaming/audio',audio.get);
-router.get('/streaming/images',images.get);
-
-/*
-    //*POST*\\
-*/
+// /*
+//     //*POST*\\
+// */
 
 
 
-//audio streaming
+// //audio streaming
 
 
 
