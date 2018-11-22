@@ -1,0 +1,39 @@
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "description": "api gateway service to provide a common public interface",
+  "main": "index.js",
+  "repository": "https://github.com/leemlwando/microtech/api-gateway-api",
+  "author": "lee m lwando",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start":"pm2 start index.js --name=view-uploads",
+    "dev":"nodemon index.js"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.3",
+    "busboy": "^0.2.14",
+    "cloudinary": "^1.11.0",
+    "cloudinary-core": "^2.5.0",
+    "cloudinary-video-player": "^1.1.1",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "fluent-ffmpeg": "^2.1.2",
+    "http-errors": "^1.7.1",
+    "ioredis": "^4.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.11",
+    "mkdirp": "^0.5.1",
+    "moleculer": "^0.13.2",
+    "moleculer-web": "^0.8.1",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.3.1",
+    "morgan": "^1.9.1",
+    "multiparty": "^4.2.1",
+    "rimraf": "^2.6.2",
+    "uuid": "^3.3.2"
+  }
+}
