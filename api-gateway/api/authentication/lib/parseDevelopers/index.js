@@ -2,41 +2,12 @@ const request = require("request");
 const createError = require("http-errors");
 
 module.exports = (req,res,next)=>{
-
-    //set required fields
-    let RequiredFields =["firstName","lastName","email","phone_primary","password","confirmPassword","town","province","country"];
-    //check for required fields
-    let missingFields = checkRequiredFields(req.body,RequiredFields);
-
-    if(missingFields.length){
-        return next(createError(406,{success:false,reason:"missing Fields", message:missingFields}));
-    };
-        
-    const {firstName,
-        lastName,
-        otherNames,
-        email,
-        phone_primary,
-        phone_secondary,
-        location,
-        password,
-        confirmPassword,
-        town,province,country
-        } = req.body;
-
-    let User = {firstName,
-        lastName,
-        otherNames,
-        email,
-        phone_primary,
-        phone_secondary,
-        location,
-        password,
-        confirmPassword,town,province,country};
-
-    //get available services
+    console.log("here...",1)
+   
     return GetServices(req,"$node.services",(err,services)=>{
+       
         if(err){
+            console.log(err)
             return next(createError({success:false,code:err.code,message:"service unavailable"}));
         };
         let _services;
@@ -51,7 +22,7 @@ module.exports = (req,res,next)=>{
         }
         
         // return res.json({success:true,service:_services});
-        return sendRequest(req,res,next,_services,User);
+        return sendRequest(req,res,next,_services);
     });
 
    
@@ -60,36 +31,26 @@ module.exports = (req,res,next)=>{
 }
 
 
-
-
-   //make sure required fields re filled in
-function checkRequiredFields(body,RequiredFields){
-    let missingFields;
-
-    missingFields = RequiredFields.filter((element,index)=>{
-        return body[element] === undefined;
-    })
-    return missingFields
-};
-
-
+//get available services
 function GetServices(_request,service,done){
     _request.$ctx.broker.call(service)
     .then(res=>done(null,res))
         .catch(err=>done(err,false));
 };
 
-function sendRequest(_req,res,next,instances,User){
+//make api call to service instance
+function sendRequest(_req,res,next,instances){
         
     console.log(instances)
     let {ip,port} = instances[0]  ? instances[0].settings : next(createError(503,{success:false,message:"service unavailable",date:new Date()}, {expose:true}));
-    return request.post(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/auth/client/register`,{
+    return request.get(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/client/developers/token`,{
         // headers:_req.headers,
         headers:{
             "Content-Type":"application/json",
-            "Accept":"application/json"
-        },
-        body:JSON.stringify(User)},function(error,response,body){
+            "Accept":"application/json",
+            "authorization":_req.headers["authorization"]
+        }
+    },function(error,response,body){
         let _httpRes;
         // console.log("error",error);
         // console.log("reponse",response.body);

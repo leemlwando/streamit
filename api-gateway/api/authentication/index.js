@@ -1,4 +1,4 @@
-const {parseRegister,parseLogin} = require("./lib");
+const {parseRegister,parseLogin,parseDevelopers} = require("./lib");
 module.exports = {
     login:{
         client:{
@@ -32,6 +32,12 @@ module.exports = {
             post:   (req,res,next)=>{res.send("registered")}
         }
         
+    },
+    getDevelopersToken:{
+        client:{
+            get:(req,res,next)=>parseDevelopers(req,res,next)
+        },
+        admin:{}
     }
        
 }

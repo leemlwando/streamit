@@ -5,6 +5,7 @@ const {home} = require("./home");
 const {login,register} = require('./authentication');
 const {uploads} = require('./uploads');
 const {images,video,audio} = require('./streaming');
+const developers = require("./developers");
 
 
 /**
@@ -26,6 +27,10 @@ router.post("/auth/register",register.client.post);
 router.get('/auth/login',login.client.get);
 
 router.post('/auth/login',login.client.post);
+
+//GET DEVELOPERS API TOKEN
+
+router.get("/client/developers/token",developers.getDevelopersToken.client.get);
 
 
 

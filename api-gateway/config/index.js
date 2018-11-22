@@ -7,7 +7,7 @@ const setup = {};
 //create service configurations
 setup.serviceConfig = {
     mixins: [],
-
+	name:"gateway",
     settings: {
         // Exposed port
         port: 5000,
@@ -134,7 +134,7 @@ setup.errorHandler = function(err,req,res,next){
         return res.json({
 			status:code,
             success:false,
-            message:error,
+            message:_error,
             reason:err.message || "Please Refer to documentation",
             date: new Date(),
             documentation:"https://github.com/leemlwando/streamit"

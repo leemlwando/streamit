@@ -67,7 +67,7 @@
         
         let {ip,port} = instances[0]  ? instances[0].settings : next(createError(503,{success:false,message:"service unavailable",date:new Date()}, {expose:true}));
     
-        return request.post(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/authentication/login?`,{
+        return request.post(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/auth/client/login`,{
             // headers:_req.headers,
             headers:{
                 "Content-Type":"application/json",
@@ -75,9 +75,9 @@
             },
             body:JSON.stringify(User)},function(error,response,body){
             let _httpRes;
-            console.log("error",error);
-            console.log("reponse",response.body);
-            console.log("body",body);
+            // console.log("error",error);
+            // console.log("reponse",response.body);
+            // console.log("body",body);
             if(error){
              
                 return  next(createError(503,{success:false,message:"server may down or service unavailable due to zesco loadsheding",reason:null}));
@@ -92,7 +92,7 @@
                 return res.json({success:false,message:_httpRes.message});
             }else if(_httpRes && _httpRes.success === true){
             
-                return res.json({success:true, message:_httpRes.message, token:_httpRes.token});
+                return res.json({success:true, payload:_httpRes.payload});
             }else{
                 
                 return res.json({success:false,message:"unkown error"})

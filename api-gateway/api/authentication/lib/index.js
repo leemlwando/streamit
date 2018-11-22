@@ -1,3 +1,4 @@
 const parseRegister = require("./parseRegister");
 const parseLogin = require("./parseLogin");
-module.exports = {parseRegister,parseLogin};
+const parseDevelopers = require("./parseDevelopers");
+module.exports = {parseRegister,parseLogin,parseDevelopers};

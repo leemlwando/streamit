@@ -5,6 +5,8 @@ module.exports = (err)=>{
 
     let code = err.code ? err.code.toString() : 500;
 
+    // console.log(".../",code);
+
     switch(code){
         case "11000":
             return "User with that Username Already Exists";
