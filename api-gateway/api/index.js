@@ -3,9 +3,10 @@ const router = express.Router();
 
 const {home} = require("./home");
 const {login,register} = require('./authentication');
-const {uploads} = require('./uploads');
-const {images,video,audio} = require('./streaming');
+const uploads = require('./uploads');
+const streaming = require('./streaming');
 const developers = require("./developers");
+const catalogs = require("./catalogs");
 
 
 /**
@@ -33,16 +34,24 @@ router.post('/auth/login',login.client.post);
 router.get("/client/developers/token",developers.getDevelopersToken.client.get);
 
 
+/**
+ * CATALOGUE SERVICES
+*/
 
+//video catalog service
+router.get("/client/catalogs",catalogs.client.get);
+//audio catalog services
+
+//image catalog services
 
 
 /*
     UPLOADS or /uploads
 */
 
-router.get("/uploads",uploads.client.get);
+// router.get("/uploads",uploads.client.get);
 
-router.post("/uploads", uploads.client.post);
+// router.post("/uploads", uploads.client.post);
 
 
 /**
