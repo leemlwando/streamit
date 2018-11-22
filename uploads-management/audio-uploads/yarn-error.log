@@ -1,0 +1,42 @@
+Arguments: 
+  /usr/bin/node /home/lee/.yarn/bin/yarn.js add cloudinary
+
+PATH: 
+  /home/lee/.yarn/bin:/home/lee/.config/yarn/global/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/lee/Android/Sdk/tools:/home/lee/Android/Sdk/platform-tools:/usr/local/go/bin:/home/lee/Android/Sdk/tools:/home/lee/Android/Sdk/platform-tools
+
+Yarn version: 
+  1.10.1
+
+Node version: 
+  8.11.4
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: EACCES: permission denied, unlink '/home/lee/Desktop/lab/Streamit/upload-services/audio-uploads/node_modules/.yarn-integrity'
+
+npm manifest: 
+  {
+    "dependencies": {
+      "body-parser": "^1.18.3",
+      "busboy": "^0.2.14",
+      "cors": "^2.8.4",
+      "dotenv": "^6.0.0",
+      "express": "^4.16.3",
+      "fluent-ffmpeg": "^2.1.2",
+      "http-errors": "^1.7.1",
+      "ioredis": "^4.0.0",
+      "moleculer": "^0.13.3",
+      "moleculer-web": "^0.8.2",
+      "mongodb": "^3.1.6",
+      "morgan": "^1.9.1",
+      "rimraf": "^2.6.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
