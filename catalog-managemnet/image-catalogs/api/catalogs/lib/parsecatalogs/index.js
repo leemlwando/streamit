@@ -13,16 +13,16 @@ let _resources = {
     audio:"audios"
 }
 
-module.exports = (req,res,next) =>{
-
+module.exports = (req,res,next)=>{
+    //get resource type ,limit,genre,tags
     let {type,api_key} = req.query;
 
-    if(!type)return next(createError(403,{message:"please provide an upload type e.g /uploads?type=audio"}));
+    //check if service is available
+        //route request
 
-    
+    return getServices(req,type,(err,results)=>{
 
-    getServices(req,type,(err,results)=>{
-       if(err)return next(err);
+        if(err)return next(err);
       
        let _service = results.filter((result)=>result.name === "user-service");
 
@@ -41,57 +41,45 @@ module.exports = (req,res,next) =>{
                 let _uploadService = results.filter((result)=>result.name === _routes[type]);
 
                     //upload file 
-                return _uploadService.length ?  UploadFile(req,res,type,_uploadService) : res.status(500).json({success:false, message:"service unavailable"});
+                return _uploadService.length ?  getCatalogs(req,res,type,_uploadService) : res.status(500).json({success:false, message:"service unavailable"});
 
                 
             })
         };
 
-
-        //if service unavailable
-       
-
-
-   });
-//get available services
-function getServices(_request,type,done){
-
-    
-
-    let services = {
-        video:"$node.services",
-        audio:"$node.services",
-        image:"$node.services"
-    }
-
-    //check if type if valid
-
-    if(!checkNodes(type,done)){
-        return done("please provide valid type",false);
-    };
-
-    let service = services[type];
-
-    if(typeof(_request) !== "object") throw TypeError(`expected request object but got ${typeof(_request)}`);
-
-    if(typeof(type) !== "string") throw TypeError(`expected type string but got ${typeof(type)}`);
-    
-    
-    _request.$ctx.broker.call(service)
-        .then(res=>done(null,res))
-            .catch(err=>done(err,false));
-
-}
+    });
 };
 
 
 
+
+//check if node handling upload is valid
+function checkNodes(type,next){
+    if(!type){
+        return false
+    };
+
+    let AvailableNodes = {
+        audio:"audio-catalogs-service",
+        image:"image-catalogs-service",
+        video:"video-catalogs-service"
+    };
+
+      
+    if(AvailableNodes[type] === undefined){
+        return false
+    };
+
+    return true;
+};
+
+
 //route request to upload service
-function UploadFile(req,res,type,instances){
+function getCatalogs(req,res,type,instances){
 
     let {ip,port} = instances[0].settings;
 
-    return req.pipe(request.post(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/uploads/${_resources[type]}?${req.url.split("?")[1]}&user=1234`).on("error",(err)=>console.log(err))).pipe(res).on("error",(error)=>console.log(error));
+    return req.pipe(request.post(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/client/catalogs/${_resources[type]}`).on("error",(err)=>next(createError(err)))).pipe(res).on("error",(error)=>next(createError(err)));
 };
 
 //confirm api token 
@@ -135,25 +123,32 @@ function sendIsDeveloperRequest(req,api_key,instances,done){
     });
 };
 
+//get available services
+function getServices(_request,type,done){
 
+    
 
-//check if node handling upload is valid
-function checkNodes(type,next){
-    if(!type){
-        return false
+    let services = {
+        video:"$node.services",
+        audio:"$node.services",
+        image:"$node.services"
+    }
+
+    //check if type if valid
+
+    if(!checkNodes(type,done)){
+        return done("please provide valid type",false);
     };
 
-    let AvailableNodes = {
-        audio:"audio-uploads-service",
-        image:"image-uplaods-service",
-        video:"video-uploads-service"
-    };
+    let service = services[type];
 
-      
-    if(AvailableNodes[type] === undefined){
-        return false
-    };
+    if(typeof(_request) !== "object") throw TypeError(`expected request object but got ${typeof(_request)}`);
 
-    return true;
-};
+    if(typeof(type) !== "string") throw TypeError(`expected type string but got ${typeof(type)}`);
+    
+    
+    _request.$ctx.broker.call(service)
+        .then(res=>done(null,res))
+            .catch(err=>done(err,false));
 
+}

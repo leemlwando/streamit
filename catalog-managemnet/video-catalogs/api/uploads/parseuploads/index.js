@@ -155,5 +155,5 @@ function checkNodes(type,next){
     };
 
     return true;
-};
+}
 

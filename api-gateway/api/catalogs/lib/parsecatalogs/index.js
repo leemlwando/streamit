@@ -79,7 +79,7 @@ function getCatalogs(req,res,type,instances){
 
     let {ip,port} = instances[0].settings;
 
-    return req.pipe(request.post(`http://${ip}:${Number(port.toString().replace("5","3"))}/api/v1/client/catalogs?type=${_resources[type]}`).on("error",(err)=>next(createError(err)))).pipe(res).on("error",(error)=>next(createError(err)));
+    return req.pipe(request.post(`http://${ip}:${Number(port.toString().replace("5","4"))}/api/v1/client/catalogs/${_resources[type]}`).on("error",(err)=>next(createError(err)))).pipe(res).on("error",(error)=>next(createError(err)));
 };
 
 //confirm api token 
